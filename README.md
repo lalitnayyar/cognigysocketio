@@ -271,3 +271,84 @@ Stay tuned for updates:
 - Additional customization options
 - Performance improvements
 - New features and integrations
+
+## 🚀 Latest Features (March 2025 Update)
+
+### Enhanced User Avatars 🎭
+- **Multiple Avatar Styles**: Choose from 10 different avatar styles:
+  - Adventurer
+  - Neutral Adventurer
+  - Classic Avataar
+  - Big Ears
+  - Big Smile
+  - Micah
+  - Miniavs
+  - Open Peeps
+  - Pixel Art
+  - Personas
+
+- **Avatar Customization**:
+  - Quick avatar style switching with one click
+  - Persistent avatar style during conversation
+  - Rainbow gradient border effects on hover
+  - Smooth rotation and scale animations
+
+### Message Styling 🎨
+- **Bot Messages**:
+  - Random light pastel background colors
+  - Matching border colors
+  - Enhanced readability with dark text
+  - Subtle hover effects
+
+- **User Messages**:
+  - Dynamic gradient backgrounds
+  - Consistent styling with avatar theme
+  - Improved contrast for better readability
+  - Smooth transitions and animations
+
+### Interactive Elements ✨
+- **Avatar Change Button**:
+  - Convenient location next to send button
+  - Glowing hover effect
+  - Smooth click animation
+  - Instant avatar update across all messages
+
+- **Message Animations**:
+  - Smooth entry animations
+  - Hover effects for both messages and avatars
+  - Rainbow gradient borders on avatar hover
+  - Scale and rotation effects
+
+### Using the New Features
+
+1. **Changing Avatar Style**:
+   - Click the user icon button next to the send button
+   - Your avatar style will update instantly
+   - All your existing messages will reflect the new style
+   - Style persists throughout your conversation
+
+2. **Message Interactions**:
+   - Hover over messages to see subtle animations
+   - Hover over avatars for rainbow border effect
+   - Watch bot messages appear with random pastel colors
+   - Enjoy smooth transitions between states
+
+3. **Visual Feedback**:
+   - Messages slide in smoothly
+   - Avatars rotate gently on hover
+   - Buttons provide clear click feedback
+   - Color transitions are smooth and pleasing
+
+### Customization Tips
+
+1. **Avatar Preferences**:
+   - Try different styles to find your favorite
+   - Each style has unique characteristics
+   - Styles are randomly selected on page load
+   - Change anytime during conversation
+
+2. **Message Appearance**:
+   - Bot messages use soft, pastel colors
+   - User messages use vibrant gradients
+   - All colors are carefully chosen for readability
+   - Animations can be viewed on hover
