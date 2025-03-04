@@ -1119,3 +1119,250 @@ pre {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.modal-icon {
+    font-size: 24px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    flex-grow: 1;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.hide-disclaimer {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+}
+
+.hide-disclaimer:hover {
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.developer-info {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+}
+
+.developer-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #4f46e5;
+    padding: 2px;
+}
+
+.developer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.developer-details h3 {
+    margin: 0 0 10px 0;
+    color: #1f2937;
+}
+
+.developer-details p {
+    margin: 5px 0;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.developer-details i {
+    color: #4f46e5;
+    width: 20px;
+}
+
+.disclaimer-text {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.disclaimer-text h3 {
+    margin: 0 0 12px 0;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.disclaimer-text p {
+    margin: 0 0 16px 0;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.disclaimer-text ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.disclaimer-text li {
+    margin: 8px 0;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.disclaimer-text li i {
+    color: #10b981;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    background: #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+.dont-show-again {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.dont-show-again input {
+    width: 16px;
+    height: 16px;
+}
+
+.accept-button {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.accept-button:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+}
+
+.accept-button:active {
+    transform: translateY(1px);
+}
+
+/* Show Disclaimer Button */
+.show-disclaimer-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.show-disclaimer-button.visible {
+    display: flex;
+    animation: slideIn 0.3s ease;
+}
+
+.show-disclaimer-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+}
+
+.show-disclaimer-button:active {
+    transform: translateY(1px);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

@@ -3,12 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cognigy Socket.IO Client</title>
+    <title>Cognigy WebSocket Client</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <!-- Font Awesome for modern icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <body>
+    <!-- Disclaimer Modal -->
+    <div id="disclaimerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-shield-alt modal-icon"></i>
+                <h2>Welcome to Cognigy WebSocket Client</h2>
+                <button id="hideDisclaimer" class="hide-disclaimer" title="Hide Disclaimer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="developer-info">
+                    <div class="developer-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=LalitNayyar" alt="Developer Avatar">
+                    </div>
+                    <div class="developer-details">
+                        <h3>Developer Information</h3>
+                        <p><i class="fas fa-user"></i> Lalit Nayyar</p>
+                        <p><i class="fas fa-envelope"></i> lalitnayyar@gmail.com</p>
+                        <p><i class="fas fa-code"></i> Senior Software Engineer</p>
+                    </div>
+                </div>
+                <div class="disclaimer-text">
+                    <h3><i class="fas fa-info-circle"></i> Disclaimer</h3>
+                    <p>This is a professional WebSocket client for Cognigy.AI. It demonstrates real-time communication capabilities with modern UI/UX design patterns.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Secure WebSocket connection</li>
+                        <li><i class="fas fa-check-circle"></i> Real-time message exchange</li>
+                        <li><i class="fas fa-check-circle"></i> Professional chat interface</li>
+                        <li><i class="fas fa-check-circle"></i> JSON message monitoring</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <label class="dont-show-again">
+                    <input type="checkbox" id="dontShowAgain">
+                    <span>Don't show this again</span>
+                </label>
+                <button id="acceptDisclaimer" class="accept-button">
+                    <i class="fas fa-check"></i> Continue to App
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show Disclaimer Button -->
+    <button id="showDisclaimer" class="show-disclaimer-button" title="Show Disclaimer">
+        <i class="fas fa-info-circle"></i>
+    </button>
+
     <!-- Config Panel -->
     <div id="configPanel" class="config-panel">
         <div class="config-header">
@@ -46,33 +100,6 @@
             <div class="config-actions">
                 <button id="resetConfig" class="reset-btn">Reset to Default</button>
                 <button id="applyConfig" class="apply-btn">Apply & Connect</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Disclaimer Popup -->
-    <div id="disclaimerPopup" class="popup">
-        <div class="popup-content">
-            <div class="popup-header">
-                <h2>Disclaimer</h2>
-                <button id="closePopup" class="close-button">&times;</button>
-            </div>
-            <div class="popup-body">
-                <p>This demonstration application is developed by <strong>Lalit Nayyar</strong>.</p>
-                <p>The content and functionality provided in this application are for demonstration purposes only. While we strive to ensure the accuracy and reliability of the information presented, please note:</p>
-                <ul>
-                    <li>This is a prototype implementation</li>
-                    <li>Features may be limited or in development</li>
-                    <li>Data processing occurs in a test environment</li>
-                </ul>
-                <p>By continuing to use this application, you acknowledge and agree to these terms.</p>
-                <div class="popup-footer">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="dontShowAgain">
-                        <span class="checkbox-text">Don't show this message again</span>
-                    </label>
-                    <button id="acceptButton" class="accept-button">Accept & Continue</button>
-                </div>
             </div>
         </div>
     </div>

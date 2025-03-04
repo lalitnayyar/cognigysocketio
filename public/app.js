@@ -23,6 +23,13 @@ const resetConfigBtn = document.getElementById('resetConfig');
 const applyConfigBtn = document.getElementById('applyConfig');
 const togglePasswordBtn = document.querySelector('.toggle-password');
 
+// Disclaimer Modal
+const disclaimerModal = document.getElementById('disclaimerModal');
+const hideDisclaimerBtn = document.getElementById('hideDisclaimer');
+const acceptDisclaimerBtn = document.getElementById('acceptDisclaimer');
+const showDisclaimerBtn = document.getElementById('showDisclaimer');
+const dontShowAgainCheckbox = document.getElementById('dontShowAgain');
+
 // Default values from server
 let defaultConfig = {
     endpoint: COGNIGY_ENDPOINT || '',
@@ -447,6 +454,51 @@ function addAvatarChangeButton() {
 
 // Initialize avatar change button
 document.addEventListener('DOMContentLoaded', addAvatarChangeButton);
+
+// Disclaimer Modal Functionality
+function showModal() {
+    disclaimerModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function hideModal() {
+    disclaimerModal.classList.remove('show');
+    document.body.style.overflow = '';
+    showDisclaimerBtn.classList.add('visible');
+    
+    if (dontShowAgainCheckbox.checked) {
+        localStorage.setItem('hideDisclaimer', 'true');
+    }
+}
+
+// Show modal on page load if not hidden
+if (!localStorage.getItem('hideDisclaimer')) {
+    showModal();
+}
+
+// Event listeners for disclaimer modal
+hideDisclaimerBtn.addEventListener('click', hideModal);
+acceptDisclaimerBtn.addEventListener('click', hideModal);
+showDisclaimerBtn.addEventListener('click', showModal);
+
+// Close modal when clicking outside
+disclaimerModal.addEventListener('click', (e) => {
+    if (e.target === disclaimerModal) {
+        hideModal();
+    }
+});
+
+// Show the disclaimer button if modal is hidden
+if (localStorage.getItem('hideDisclaimer')) {
+    showDisclaimerBtn.classList.add('visible');
+}
+
+// Escape key to close modal
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && disclaimerModal.classList.contains('show')) {
+        hideModal();
+    }
+});
 
 // Initialize the app
 initializeConfigInputs();
