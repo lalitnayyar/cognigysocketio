@@ -8,6 +8,141 @@ const socket = io('wss://endpoint-amna.cognigy.cloud', {
     }
 });
 
+// Configuration Panel
+const configPanel = document.getElementById('configPanel');
+const toggleConfigBtn = document.getElementById('toggleConfig');
+const endpointInput = document.getElementById('endpointInput');
+const tokenInput = document.getElementById('tokenInput');
+const sessionInput = document.getElementById('sessionInput');
+const userInput = document.getElementById('userInput');
+const resetConfigBtn = document.getElementById('resetConfig');
+const applyConfigBtn = document.getElementById('applyConfig');
+const togglePasswordBtn = document.querySelector('.toggle-password');
+
+// Default values from server
+let defaultConfig = {
+    endpoint: COGNIGY_ENDPOINT || '',
+    token: URL_TOKEN || '',
+    sessionId: SESSION_ID || '',
+    userId: USER_ID || ''
+};
+
+// Load saved configuration from localStorage
+let currentConfig = JSON.parse(localStorage.getItem('cognigyConfig')) || defaultConfig;
+
+// Initialize input values
+function initializeConfigInputs() {
+    endpointInput.value = currentConfig.endpoint;
+    tokenInput.value = currentConfig.token;
+    sessionInput.value = currentConfig.sessionId;
+    userInput.value = currentConfig.userId;
+}
+
+// Toggle config panel
+toggleConfigBtn.addEventListener('click', () => {
+    configPanel.classList.toggle('show');
+});
+
+// Toggle password visibility
+togglePasswordBtn.addEventListener('click', () => {
+    const type = tokenInput.type === 'password' ? 'text' : 'password';
+    tokenInput.type = type;
+    togglePasswordBtn.innerHTML = type === 'password' 
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+});
+
+// Reset configuration
+resetConfigBtn.addEventListener('click', () => {
+    currentConfig = { ...defaultConfig };
+    localStorage.removeItem('cognigyConfig');
+    initializeConfigInputs();
+});
+
+// Apply configuration and reconnect
+applyConfigBtn.addEventListener('click', async () => {
+    const newConfig = {
+        endpoint: endpointInput.value || defaultConfig.endpoint,
+        token: tokenInput.value || defaultConfig.token,
+        sessionId: sessionInput.value || defaultConfig.sessionId,
+        userId: userInput.value || defaultConfig.userId
+    };
+
+    // Save to localStorage
+    localStorage.setItem('cognigyConfig', JSON.stringify(newConfig));
+    currentConfig = newConfig;
+
+    // Reconnect socket with new configuration
+    if (socket) {
+        socket.disconnect();
+    }
+
+    // Initialize new socket connection
+    socket = io(currentConfig.endpoint, {
+        query: {
+            'token': currentConfig.token,
+            'sessionId': currentConfig.sessionId,
+            'userId': currentConfig.userId
+        }
+    });
+
+    // Reinitialize socket event handlers
+    initializeSocketHandlers();
+
+    // Hide config panel
+    configPanel.classList.remove('show');
+});
+
+// Initialize socket event handlers
+function initializeSocketHandlers() {
+    socket.on('connect', () => {
+        console.log('Connected to Cognigy.AI');
+        addMessage('Connected to Cognigy.AI', true);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Disconnected from Cognigy.AI');
+        addMessage('Disconnected from Cognigy.AI', true);
+    });
+
+    socket.on('error', (error) => {
+        console.error('Socket Error:', error);
+        addMessage('Error: ' + error.message, true);
+    });
+
+    socket.on('output', (output) => {
+        console.log('Received output:', output);
+        updateJsonPanel(output, 'incomingJson');
+        
+        if (output.text) {
+            addMessage(output.text, true);
+        }
+        
+        if (output.data && output.data.quickReplies) {
+            const quickRepliesElement = createQuickReplyButtons(output.data.quickReplies);
+            if (quickRepliesElement) {
+                messageContainer.appendChild(quickRepliesElement);
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+        }
+    });
+}
+
+// Initialize configuration
+initializeConfigInputs();
+
+// Initialize socket with current configuration
+let socket = io(currentConfig.endpoint, {
+    query: {
+        'token': currentConfig.token,
+        'sessionId': currentConfig.sessionId,
+        'userId': currentConfig.userId
+    }
+});
+
+// Initialize socket handlers
+initializeSocketHandlers();
+
 // DOM Elements
 const chatMessages = document.getElementById('chatMessages');
 const messageInput = document.getElementById('messageInput');

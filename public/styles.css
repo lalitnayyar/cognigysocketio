@@ -505,3 +505,154 @@ pre {
         animation: none;
     }
 }
+
+/* Configuration Panel Styles */
+.config-panel {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: var(--cognigy-chat-color-surface);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    transform: translateX(calc(100% + 1rem));
+    transition: transform 0.3s ease-in-out;
+    z-index: 900;
+}
+
+.config-panel.show {
+    transform: translateX(0);
+}
+
+.config-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.config-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--cognigy-chat-color-on-surface);
+}
+
+.toggle-config-btn {
+    position: absolute;
+    left: -3rem;
+    top: 0.5rem;
+    background: var(--cognigy-chat-color-primary);
+    color: var(--cognigy-chat-color-on-primary);
+    border: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.toggle-config-btn:hover {
+    filter: brightness(1.1);
+}
+
+.config-content {
+    padding: 1rem;
+}
+
+.config-group {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.config-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.config-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--cognigy-chat-color-surface);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.config-group input:focus {
+    outline: none;
+    border-color: var(--cognigy-chat-color-primary);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+.config-group input::placeholder {
+    color: var(--text-secondary);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 0.75rem;
+    top: 2.25rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.toggle-password:hover {
+    color: var(--text-primary);
+}
+
+.config-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.reset-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--cognigy-chat-color-surface);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    background: var(--cognigy-chat-color-surface-secondary);
+}
+
+.apply-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--cognigy-chat-color-primary);
+    color: var(--cognigy-chat-color-on-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.apply-btn:hover {
+    filter: brightness(1.1);
+}
+
+.apply-btn:active,
+.reset-btn:active {
+    transform: scale(0.98);
+}
