@@ -14,9 +14,10 @@ workers_dev = false
 
 [build]
 command = "npm run build"
+publish = "dist"
 
-[build.upload]
-format = "directory"
+[build.processing]
+skip_processing = false
 
-[pages]
-pages_build_output_dir = "dist"
+[build.processing.html]
+pretty_urls = true
