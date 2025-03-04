@@ -15,6 +15,10 @@ const sendButton = document.getElementById('sendButton');
 const outgoingJson = document.getElementById('outgoingJson');
 const incomingJson = document.getElementById('incomingJson');
 const toggleButtons = document.querySelectorAll('.toggle-btn');
+const disclaimerPopup = document.getElementById('disclaimerPopup');
+const closePopupBtn = document.getElementById('closePopup');
+const acceptButton = document.getElementById('acceptButton');
+const dontShowAgainCheckbox = document.getElementById('dontShowAgain');
 
 // Toggle JSON panels
 toggleButtons.forEach(button => {
@@ -116,6 +120,34 @@ function sendMessage(text) {
     // Send message through socket
     socket.emit('processInput', message);
 }
+
+// Disclaimer Popup Functionality
+// Check if user has already accepted the disclaimer
+const hasAcceptedDisclaimer = localStorage.getItem('acceptedDisclaimer');
+
+// Show popup if not previously accepted
+if (!hasAcceptedDisclaimer) {
+    disclaimerPopup.classList.add('show');
+}
+
+// Close popup function
+function closePopup() {
+    disclaimerPopup.classList.remove('show');
+    if (dontShowAgainCheckbox.checked) {
+        localStorage.setItem('acceptedDisclaimer', 'true');
+    }
+}
+
+// Event listeners for popup
+closePopupBtn.addEventListener('click', closePopup);
+acceptButton.addEventListener('click', closePopup);
+
+// Close popup when clicking outside
+disclaimerPopup.addEventListener('click', (e) => {
+    if (e.target === disclaimerPopup) {
+        closePopup();
+    }
+});
 
 // Event Listeners
 sendButton.addEventListener('click', () => {

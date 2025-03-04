@@ -324,6 +324,151 @@ pre {
     color: var(--cognigy-chat-color-on-primary);
 }
 
+/* Disclaimer Popup Styles */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.popup.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: var(--cognigy-chat-color-surface);
+    width: 90%;
+    max-width: 600px;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: slideIn 0.3s ease-out;
+}
+
+.popup-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-header h2 {
+    margin: 0;
+    color: var(--cognigy-chat-color-on-surface);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.close-button:hover {
+    background: var(--cognigy-chat-color-surface-secondary);
+    color: var(--text-primary);
+}
+
+.popup-body {
+    padding: 1.5rem;
+    color: var(--text-primary);
+}
+
+.popup-body p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.popup-body ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.popup-body li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.popup-footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+}
+
+.checkbox-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.accept-button {
+    background: var(--cognigy-chat-color-primary);
+    color: var(--cognigy-chat-color-on-primary);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.accept-button:hover {
+    filter: brightness(1.1);
+}
+
+.accept-button:active {
+    transform: scale(0.98);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
     width: 6px;
