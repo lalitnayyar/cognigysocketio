@@ -77,6 +77,79 @@ A modern Node.js application that provides a professional chat interface for Cog
 5. Open your browser:
    Navigate to `http://localhost:3000`
 
+## 🚀 Deployment
+
+### Deploying to Cloudflare Pages
+
+1. **Prerequisites**
+   - A Cloudflare account
+   - The repository pushed to GitHub
+
+2. **Setup Steps**
+
+   a. Log in to Cloudflare Dashboard
+   - Go to https://dash.cloudflare.com
+   - Navigate to Pages
+
+   b. Connect to GitHub
+   - Click "Create application"
+   - Select "Connect to Git"
+   - Choose your repository
+
+   c. Configure Build Settings
+   - Set build command: `npm run build`
+   - Set build output directory: `dist`
+   - Set environment variables:
+     ```
+     COGNIGY_ENDPOINT=wss://endpoint-amna.cognigy.cloud
+     URL_TOKEN=your_url_token
+     SESSION_ID=your_session_id
+     USER_ID=your_user_id
+     ```
+
+   d. Deploy
+   - Click "Save and Deploy"
+   - Wait for the build and deployment to complete
+
+3. **Custom Domain (Optional)**
+   - In the Pages project settings
+   - Go to "Custom domains"
+   - Click "Set up custom domain"
+   - Follow the DNS configuration instructions
+
+4. **Monitoring**
+   - View build logs in the deployment details
+   - Monitor analytics in the Pages dashboard
+   - Check Web Analytics for visitor insights
+
+### Environment Variables
+
+Make sure to set these in your Cloudflare Pages environment variables:
+
+```env
+COGNIGY_ENDPOINT=wss://endpoint-amna.cognigy.cloud
+URL_TOKEN=your_url_token
+SESSION_ID=your_session_id
+USER_ID=your_user_id
+```
+
+### Troubleshooting Deployment
+
+1. **Build Failures**
+   - Check build logs in Cloudflare dashboard
+   - Verify build command and output directory
+   - Ensure all dependencies are listed in package.json
+
+2. **Runtime Errors**
+   - Check browser console for errors
+   - Verify environment variables are set
+   - Ensure WebSocket connection is allowed
+
+3. **Performance Issues**
+   - Enable Cloudflare caching
+   - Optimize asset sizes
+   - Use Cloudflare's CDN features
+
 ## 💻 Usage Guide
 
 ### Chat Interface
