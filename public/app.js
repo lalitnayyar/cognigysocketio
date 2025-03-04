@@ -33,6 +33,37 @@ toggleButtons.forEach(button => {
     });
 });
 
+// Format timestamp
+function formatTime(timestamp) {
+    return moment(timestamp).format('HH:mm');
+}
+
+// Safely parse HTML content
+function sanitizeHTML(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Format message text with HTML support
+function formatMessageText(text) {
+    if (!text) return '';
+    
+    // Handle markdown-style formatting
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
+    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italic
+    text = text.replace(/`(.*?)`/g, '<code>$1</code>'); // Code
+    text = text.replace(/\n/g, '<br>'); // Line breaks
+    
+    // Handle URLs
+    text = text.replace(
+        /(https?:\/\/[^\s]+)/g, 
+        '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
+    
+    return text;
+}
+
 // Helper function to create message element
 function createMessageElement(text, isReceived = false, timestamp = new Date()) {
     const messageDiv = document.createElement('div');
@@ -47,15 +78,12 @@ function createMessageElement(text, isReceived = false, timestamp = new Date()) 
     
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
-    
-    const messageText = document.createElement('div');
-    messageText.textContent = text;
+    contentDiv.innerHTML = formatMessageText(text);
     
     const timeSpan = document.createElement('div');
     timeSpan.className = 'message-time';
-    timeSpan.textContent = moment(timestamp).format('HH:mm');
+    timeSpan.textContent = formatTime(timestamp);
     
-    contentDiv.appendChild(messageText);
     contentDiv.appendChild(timeSpan);
     
     messageDiv.appendChild(avatar);
