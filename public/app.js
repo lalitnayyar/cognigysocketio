@@ -106,17 +106,17 @@ function initializeSocket(config) {
     // Socket event handlers
     socket.on('connect', () => {
         console.log('Connected to Cognigy.AI');
-        addMessage('Connected to Cognigy.AI', true);
+        appendMessage('Connected to Cognigy.AI', false);
     });
 
     socket.on('disconnect', () => {
         console.log('Disconnected from Cognigy.AI');
-        addMessage('Disconnected from Cognigy.AI', true);
+        appendMessage('Disconnected from Cognigy.AI', false);
     });
 
     socket.on('error', (error) => {
         console.error('Socket Error:', error);
-        addMessage('Error: ' + error.message, true);
+        appendMessage('Error: ' + error.message, false);
     });
 
     socket.on('output', (output) => {
@@ -124,7 +124,7 @@ function initializeSocket(config) {
         updateJsonPanel(output, 'incomingJson');
         
         if (output.data && output.data.text) {
-            addMessage(output.data.text, true);
+            appendMessage(output.data.text, false, output.data);
         }
         
         if (output.data && output.data.quickReplies) {
@@ -137,33 +137,60 @@ function initializeSocket(config) {
     });
 }
 
-// Add message to chat
-function addMessage(text, isBot = false) {
+// Append message to chat
+function appendMessage(text, isUser, data = null) {
     const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${isBot ? 'bot' : 'user'}`;
+    messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+
+    // Create avatar container
+    const avatarContainer = document.createElement('div');
+    avatarContainer.className = 'avatar-container';
     
-    const timestamp = document.createElement('div');
-    timestamp.className = 'timestamp';
-    timestamp.textContent = moment().format('HH:mm');
-    
-    const content = document.createElement('div');
-    content.className = 'content';
-    content.innerHTML = formatMessage(text);
-    
-    messageDiv.appendChild(content);
-    messageDiv.appendChild(timestamp);
-    
+    // Create avatar image
+    const avatarImg = document.createElement('img');
+    avatarImg.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${isUser ? 'child' : 'bot'}`;
+    avatarImg.alt = `${isUser ? 'User' : 'Bot'} Avatar`;
+    avatarContainer.appendChild(avatarImg);
+    messageDiv.appendChild(avatarContainer);
+
+    // Create message content container
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+
+    // Add message header with sender and timestamp
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'message-header';
+    headerDiv.innerHTML = `
+        <span class="sender-name">${isUser ? 'You' : 'Cognigy AI'}</span>
+        <span class="message-time">${formatTime(new Date())}</span>
+    `;
+    contentDiv.appendChild(headerDiv);
+
+    // Add message text
+    const textDiv = document.createElement('div');
+    textDiv.className = 'message-text';
+    textDiv.textContent = text;
+    contentDiv.appendChild(textDiv);
+
+    // Add data if present
+    if (data) {
+        const dataDiv = document.createElement('div');
+        dataDiv.className = 'message-data';
+        dataDiv.textContent = JSON.stringify(data, null, 2);
+        contentDiv.appendChild(dataDiv);
+    }
+
+    messageDiv.appendChild(contentDiv);
     messageContainer.appendChild(messageDiv);
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
-// Format message with markdown-like syntax
-function formatMessage(text) {
-    return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code>$1</code>')
-        .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+function formatTime(date) {
+    return date.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    });
 }
 
 // Create quick reply buttons
@@ -184,7 +211,7 @@ function createQuickReplyButtons(quickReplies) {
             };
             socket.emit('processInput', message);
             updateJsonPanel(message, 'outgoingJson');
-            addMessage(reply);
+            appendMessage(reply, true);
             container.remove();
         };
         container.appendChild(button);
@@ -218,7 +245,7 @@ function sendMessage() {
 
     socket.emit('processInput', message);
     updateJsonPanel(message, 'outgoingJson');
-    addMessage(text);
+    appendMessage(text, true);
     messageInput.value = '';
 }
 
