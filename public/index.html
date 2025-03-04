@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognigy Chat Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar - Chat Interface -->
+        <div class="left-sidebar">
+            <div class="chat-header">
+                <div class="user-profile">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user" alt="User Avatar" class="avatar">
+                    <div class="user-info">
+                        <h3>User</h3>
+                        <span class="status">Online</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be inserted here -->
+            </div>
+            <div class="chat-input">
+                <div class="input-wrapper">
+                    <input type="text" id="messageInput" placeholder="Type your message...">
+                    <button id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar - JSON Exchange -->
+        <div class="right-sidebar">
+            <div class="json-header">
+                <h3>JSON Exchange</h3>
+                <div class="toggle-buttons">
+                    <button class="toggle-btn active" data-target="outgoing">Outgoing</button>
+                    <button class="toggle-btn" data-target="incoming">Incoming</button>
+                </div>
+            </div>
+            <div class="json-content">
+                <div class="json-panel active" id="outgoing">
+                    <h4>Outgoing Message</h4>
+                    <pre id="outgoingJson"></pre>
+                </div>
+                <div class="json-panel" id="incoming">
+                    <h4>Incoming Message</h4>
+                    <pre id="incomingJson"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

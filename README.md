@@ -1,172 +1,200 @@
 # Cognigy Socket.IO Client
 
-A Node.js application that enables real-time communication with Cognigy.AI using Socket.IO. This client allows you to send messages to Cognigy and receive responses in real-time.
+A modern Node.js application that provides a professional chat interface for Cognigy.AI using Socket.IO. This client features a sleek, responsive design with real-time message exchange visualization.
 
-## Features
+![Demo Screenshot](https://api.dicebear.com/7.x/avataaars/svg?seed=demo) <!-- Placeholder for actual screenshot -->
 
-- 🔌 Real-time WebSocket connection to Cognigy.AI
-- 📨 Bidirectional message communication
-- 🔄 Support for conversation flow reset
-- 📝 Custom data payload support
-- 🛡️ Environment-based configuration
-- ⚡ Asynchronous event handling
-- 🚫 Error handling and graceful disconnection
-- 📊 Console logging for debugging
+## 🌟 Features
 
-## Prerequisites
+### Chat Interface (Left Sidebar)
+- 💬 Modern chat bubble design with timestamps
+- 👤 Dynamic user avatars using DiceBear API
+- 🟢 Real-time online status indicators
+- ⌨️ Intuitive message input with send button
+- 📜 Smooth-scrolling chat history
+- ⚡ Real-time message delivery
+- 🕒 Message timestamps
 
+### JSON Exchange Monitor (Right Sidebar)
+- 🔄 Live JSON message monitoring
+- 📤 Outgoing message JSON preview
+- 📥 Incoming message JSON display
+- 🎨 Syntax-highlighted JSON formatting
+- 🌙 Dark theme for better readability
+- 📋 Easy-to-read message structure
+
+### Design Elements
+- 🎨 Vibrant, modern color scheme
+- 📱 Fully responsive layout
+- ✨ Smooth animations and transitions
+- 🖌️ Custom scrollbar styling
+- 🎯 Professional typography
+- 🔲 Clean, minimalist interface
+
+### Technical Features
+- 🔌 Real-time WebSocket communication
+- 🔒 Secure connection handling
+- 🔄 Automatic reconnection
+- ⚠️ Error handling with user feedback
+- 📊 Message delivery status
+- 🕐 Moment.js time formatting
+
+## 🚀 Quick Start
+
+### Prerequisites
 - Node.js (v12 or higher)
 - npm (Node Package Manager)
-- Cognigy endpoint URL and URL token
+- A valid Cognigy endpoint URL and token
 
-## Installation
+### Installation
 
-1. Clone or download this repository
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/lalitnayyar/cognigysocketio.git
+   cd cognigysocketio
+   ```
+
 2. Install dependencies:
    ```bash
    npm install
    ```
 
-## Configuration
-
-The application uses a `.env` file for configuration. The following variables are required:
-
-```env
-COGNIGY_ENDPOINT=wss://endpoint-amna.cognigy.cloud
-URL_TOKEN=your_url_token
-SESSION_ID=your_session_id
-USER_ID=your_user_id
-```
-
-## Usage Guide
-
-### Starting the Application
-
-```bash
-npm start
-```
-
-### Sending Messages
-
-The application provides several ways to interact with Cognigy:
-
-1. **Basic Message**
-   ```javascript
-   sendMessage('Hello, how can you help me?');
+3. Configure your environment variables:
+   Create a `.env` file with:
+   ```env
+   COGNIGY_ENDPOINT=wss://endpoint-amna.cognigy.cloud
+   URL_TOKEN=your_url_token
+   SESSION_ID=your_session_id
+   USER_ID=your_user_id
+   PORT=3000
    ```
 
-2. **Message with Custom Data**
-   ```javascript
-   sendMessage('Search for products', false, {
-     category: 'electronics',
-     maxPrice: 1000
-   });
+4. Start the application:
+   ```bash
+   npm start
    ```
 
-3. **Reset Flow**
+5. Open your browser:
+   Navigate to `http://localhost:3000`
+
+## 💻 Usage Guide
+
+### Chat Interface
+
+1. **Sending Messages**
+   - Type your message in the input field
+   - Press Enter or click the send button
+   - Messages appear instantly with timestamps
+
+2. **Viewing Message History**
+   - Scroll through previous messages
+   - Messages are color-coded (blue for sent, gray for received)
+   - Each message shows sender avatar and timestamp
+
+3. **Connection Status**
+   - Green dot indicates active connection
+   - Automatic reconnection on disconnection
+   - Status messages for connection events
+
+### JSON Monitor
+
+1. **Viewing JSON Exchange**
+   - Toggle between "Outgoing" and "Incoming" panels
+   - Real-time updates as messages are sent/received
+   - Formatted JSON for easy reading
+
+2. **Message Structure**
    ```javascript
-   sendMessage('Start over', true);
+   // Outgoing Message Format
+   {
+     "URLToken": "your_token",
+     "sessionId": "session_id",
+     "userId": "user_id",
+     "passthroughIP": "127.0.0.1",
+     "resetFlow": false,
+     "text": "Your message",
+     "data": {}
+   }
+
+   // Incoming Message Format
+   {
+     "type": "output",
+     "data": {
+       "text": "Bot response",
+       "data": {}
+     }
+   }
    ```
 
-### Message Format
+## 🛠️ Customization
 
-#### Outgoing Messages
+### Styling
+- Edit `public/styles.css` to modify:
+  - Color scheme (CSS variables)
+  - Layout dimensions
+  - Animation timings
+  - Typography
+
+### Avatar Configuration
+- Modify avatar settings in `public/app.js`:
+  ```javascript
+  // Change avatar style or seed
+  avatar.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=custom'
+  ```
+
+### Message Display
+- Customize message formatting in `createMessageElement` function
+- Modify timestamp format using Moment.js options
+
+## 🔧 Advanced Configuration
+
+### Environment Variables
+- `COGNIGY_ENDPOINT`: WebSocket endpoint URL
+- `URL_TOKEN`: Authentication token
+- `SESSION_ID`: Session identifier
+- `USER_ID`: User identifier
+- `PORT`: Server port (default: 3000)
+
+### WebSocket Options
 ```javascript
-{
-    URLToken: "your_token",
-    sessionId: "your_session_id",
-    userId: "your_user_id",
-    passthroughIP: "127.0.0.1",
-    resetFlow: false,
-    text: "Your message",
-    data: {
-        // Optional custom data
-    }
-}
+const socket = io(endpoint, {
+  transports: ['websocket'],
+  reconnection: true,
+  reconnectionAttempts: 5,
+  // Add custom options here
+});
 ```
 
-#### Incoming Messages
-```javascript
-{
-    type: "output",
-    data: {
-        text: "Response from Cognigy",
-        data: {
-            // Additional data from Cognigy
-        }
-    }
-}
-```
+## 📱 Browser Support
 
-## Event Handling
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
-The client automatically handles the following events:
+## 🤝 Contributing
 
-- `connect`: Triggered when successfully connected to Cognigy
-- `output`: Receives messages from Cognigy
-- `error`: Handles connection errors
-- `disconnect`: Manages clean disconnection
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-## Error Handling
-
-The application includes built-in error handling for:
-- Connection failures
-- Message sending errors
-- Invalid message formats
-- Disconnection events
-
-## Debugging
-
-All events and messages are logged to the console for easy debugging:
-- Connection status changes
-- Sent messages
-- Received messages
-- Errors
-
-## Best Practices
-
-1. **Session Management**
-   - Use unique session IDs for different conversations
-   - Handle session timeouts appropriately
-
-2. **Flow Control**
-   - Use `resetFlow: true` sparingly
-   - Maintain conversation context when needed
-
-3. **Error Handling**
-   - Monitor console logs for errors
-   - Implement reconnection logic if needed
-
-4. **Data Security**
-   - Never expose your URL token
-   - Use environment variables for sensitive data
-
-## Troubleshooting
-
-Common issues and solutions:
-
-1. **Connection Failed**
-   - Verify your Cognigy endpoint URL
-   - Check URL token validity
-   - Ensure internet connectivity
-
-2. **Messages Not Sending**
-   - Confirm WebSocket connection status
-   - Verify message format
-   - Check console for errors
-
-3. **No Responses**
-   - Verify event listeners are properly set up
-   - Check Cognigy flow configuration
-   - Confirm session ID is valid
-
-## Support
-
-For issues and feature requests, please:
-1. Check the console logs for errors
-2. Review the troubleshooting guide
-3. Verify your Cognigy configuration
-
-## License
+## 📄 License
 
 This project is open-source and available under the MIT License.
+
+## 🆘 Support
+
+For issues and feature requests:
+1. Check existing GitHub issues
+2. Create a new issue with detailed description
+3. Include steps to reproduce any bugs
+
+## 🔄 Updates
+
+Stay tuned for updates:
+- Enhanced UI components
+- Additional customization options
+- Performance improvements
+- New features and integrations
