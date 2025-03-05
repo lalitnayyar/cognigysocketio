@@ -6,6 +6,14 @@ A modern, professional WebSocket client for Cognigy.AI featuring a sleek chat in
 
 ## 🌟 Latest Features (March 2025)
 
+### Speech-to-Text Integration
+- 🎤 **Voice Input Support**
+  - Real-time speech recognition
+  - Microphone status indicator
+  - Edit transcribed text before sending
+  - Smooth recording animations
+  - Browser compatibility check
+
 ### Enhanced User Interface
 - 🎭 **Multiple Avatar Styles**: Choose from 10 unique avatar designs
   - Adventurer & Neutral Adventurer
@@ -117,19 +125,26 @@ A modern, professional WebSocket client for Cognigy.AI featuring a sleek chat in
 
 ### Chat Features
 
-1. **Sending Messages**
+1. **Voice Input**
+   - Click microphone icon to start recording
+   - Speak your message clearly
+   - Edit transcribed text if needed
+   - Click microphone again to stop recording
+   - Send message normally after transcription
+
+2. **Sending Messages**
    - Type in the input field
    - Press Enter or click send
    - See instant message delivery
    - Watch dynamic styling apply
 
-2. **Viewing History**
+3. **Viewing History**
    - Scroll through past messages
    - Color-coded by sender
    - Timestamps on all messages
    - Smooth scroll animations
 
-3. **JSON Monitor**
+4. **JSON Monitor**
    - Toggle between panels
    - Watch real-time updates
    - See formatted JSON
