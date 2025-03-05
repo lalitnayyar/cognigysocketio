@@ -17,31 +17,73 @@ cognigysocketio/
 
 ## 🔄 Data Flow
 
-### WebSocket Communication
-```mermaid
-graph LR
-    A[Client] -->|1. Connect with config| B[Cognigy Endpoint]
-    B -->|2. Connection established| A
-    A -->|3. Send message| B
-    B -->|4. Process & respond| A
-    A -->|5. Display response| C[UI Update]
+### WebSocket Communication Flow
+```
++----------------+     1. Connect     +------------------+
+|                | ----------------> |                  |
+|                |   with config     |                  |
+|     Client     |                   |     Cognigy      |
+|    (Browser)   | <---------------- |    Endpoint      |
+|                | 2. Connection OK  |                  |
+|                |                   |                  |
+|                | 3. Send Message   |                  |
+|                | ----------------> |                  |
+|                |                   |                  |
+|                | 4. Bot Response   |                  |
+|                | <---------------- |                  |
++----------------+                   +------------------+
+        |
+        | 5. UI Update
+        v
++----------------+
+|   Interface    |
+|   - Messages   |
+|   - JSON View  |
+|   - Status     |
++----------------+
 ```
 
-1. **Connection Initialization**
-   - Load configuration from localStorage/environment
-   - Establish WebSocket connection with Cognigy endpoint
-   - Handle connection events (connect, disconnect, error)
+### Data Flow Steps
 
-2. **Message Flow**
-   - User input (text/voice) → Message formatting
-   - WebSocket emission → Cognigy processing
-   - Response reception → UI update
-   - JSON panel synchronization
+1. **Initial Connection**
+   ```javascript
+   socket = io(config.endpoint, {
+       transports: ['websocket'],
+       query: {
+           'urlToken': config.token,
+           'sessionId': config.sessionId,
+           'userId': config.userId
+       }
+   });
+   ```
 
-3. **State Management**
-   - Configuration persistence in localStorage
-   - Session maintenance
-   - User preferences (avatar style, disclaimer settings)
+2. **Message Processing**
+   ```
+   User Input → Text/Voice → WebSocket → Cognigy AI → Response → UI Update
+   ```
+   - Text input directly from input field
+   - Voice input through Speech Recognition API
+   - Message formatting and validation
+   - Real-time WebSocket transmission
+   - Response handling and display
+
+3. **State Updates**
+   ```
+   Action → State Change → UI Update → JSON Panel Sync
+   ```
+   - User actions trigger state changes
+   - State changes reflect in UI
+   - JSON panels show real-time data
+   - Connection status updates
+
+4. **Error Handling Flow**
+   ```
+   Error → Error Handler → User Notification → Recovery Action
+   ```
+   - Connection errors
+   - Speech recognition errors
+   - Message delivery failures
+   - Automatic reconnection
 
 ## 🎨 Frontend Architecture
 
