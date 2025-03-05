@@ -11,6 +11,7 @@ const sendButton = document.getElementById('sendButton');
 const jsonPanel = document.getElementById('jsonPanel');
 const outgoingJsonContent = document.getElementById('outgoingJson');
 const incomingJsonContent = document.getElementById('incomingJson');
+const micButton = document.getElementById('micButton');
 
 // Configuration Panel
 const configPanel = document.getElementById('configPanel');
@@ -147,6 +148,75 @@ function initializeSocket(config) {
         }
     });
 }
+
+// Speech Recognition Setup
+let recognition = null;
+function initializeSpeechRecognition() {
+    if ('webkitSpeechRecognition' in window) {
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = handleSpeechResult;
+        recognition.onerror = handleSpeechError;
+        recognition.onend = () => {
+            micButton.classList.remove('recording');
+        };
+
+        // Show mic button if speech recognition is supported
+        if (micButton) {
+            micButton.style.display = 'flex';
+            micButton.addEventListener('click', () => {
+                if (micButton.classList.contains('recording')) {
+                    stopRecording();
+                } else {
+                    startRecording();
+                }
+            });
+        }
+    } else if (micButton) {
+        micButton.style.display = 'none';
+    }
+}
+
+// Handle speech recognition results
+function handleSpeechResult(event) {
+    const transcript = Array.from(event.results)
+        .map(result => result[0].transcript)
+        .join('');
+    
+    messageInput.value = transcript;
+    messageInput.focus();
+    
+    // Trigger input event to enable/disable send button
+    messageInput.dispatchEvent(new Event('input'));
+}
+
+// Handle speech recognition errors
+function handleSpeechError(event) {
+    console.error('Speech recognition error:', event.error);
+    stopRecording();
+}
+
+// Start recording
+function startRecording() {
+    if (recognition) {
+        recognition.start();
+        micButton.classList.add('recording');
+    }
+}
+
+// Stop recording
+function stopRecording() {
+    if (recognition) {
+        recognition.stop();
+        micButton.classList.remove('recording');
+    }
+}
+
+// Initialize speech recognition
+// initializeSpeechRecognition();
 
 // Random gradient colors for messages
 const gradients = [
@@ -414,21 +484,23 @@ function initializeEventListeners() {
 
     messageForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const text = messageInput.value.trim();
-        
-        if (text) {
-            sendMessage(text);
+        const message = messageInput.value.trim();
+        if (message) {
+            sendMessage(message);
             messageInput.value = '';
-            messageInput.focus();
+            sendButton.disabled = true;
         }
     });
 
     messageInput.addEventListener('input', () => {
-        sendButton.disabled = !messageInput.value.trim();
+        sendButton.disabled = messageInput.value.trim() === '';
     });
 
     // Initialize button as disabled
     sendButton.disabled = true;
+
+    // Initialize speech recognition
+    initializeSpeechRecognition();
 }
 
 // Function to change user avatar style
@@ -452,8 +524,18 @@ function addAvatarChangeButton() {
     chatInput.appendChild(button);
 }
 
-// Initialize avatar change button
-document.addEventListener('DOMContentLoaded', addAvatarChangeButton);
+// Call initializeEventListeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeEventListeners();
+    initializeConfigInputs();
+    initializeSocket(currentConfig);
+    addAvatarChangeButton();
+    
+    // Show modal on page load if not hidden
+    if (!localStorage.getItem('hideDisclaimer')) {
+        showModal();
+    }
+});
 
 // Disclaimer Modal Functionality
 function showModal() {
@@ -469,11 +551,6 @@ function hideModal() {
     if (dontShowAgainCheckbox.checked) {
         localStorage.setItem('hideDisclaimer', 'true');
     }
-}
-
-// Show modal on page load if not hidden
-if (!localStorage.getItem('hideDisclaimer')) {
-    showModal();
 }
 
 // Event listeners for disclaimer modal
@@ -499,65 +576,6 @@ document.addEventListener('keydown', (e) => {
         hideModal();
     }
 });
-
-// Initialize the app
-initializeConfigInputs();
-initializeSocket(currentConfig);
-initializeEventListeners();
-
-// Example usage for testing
-function testAdaptiveCard() {
-    const cardData = {
-        title: 'Booking Information',
-        subtitle: 'Please provide your booking details',
-        fields: [
-            {
-                type: 'text',
-                label: 'Full Name',
-                placeholder: 'Enter your name',
-                required: true
-            },
-            {
-                type: 'email',
-                label: 'Email Address',
-                placeholder: 'your@email.com',
-                required: true
-            },
-            {
-                type: 'select',
-                label: 'Room Type',
-                options: [
-                    { value: 'standard', label: 'Standard Room' },
-                    { value: 'deluxe', label: 'Deluxe Room' },
-                    { value: 'suite', label: 'Suite' }
-                ]
-            },
-            {
-                type: 'checkbox',
-                label: 'Additional Services',
-                options: [
-                    { value: 'breakfast', label: 'Breakfast' },
-                    { value: 'parking', label: 'Parking' },
-                    { value: 'wifi', label: 'WiFi' }
-                ]
-            }
-        ],
-        actions: [
-            {
-                label: 'Submit',
-                type: 'primary',
-                onClick: () => console.log('Submit clicked')
-            },
-            {
-                label: 'Cancel',
-                type: 'secondary',
-                onClick: () => console.log('Cancel clicked')
-            }
-        ]
-    };
-
-    appendBotMessage('Please fill out the booking form:', { card: cardData });
-}
 
 function createAdaptiveCard(data) {
     const card = document.createElement('div');
@@ -669,4 +687,58 @@ function createAdaptiveCard(data) {
 function getRandomTheme() {
     const cardThemes = ['theme-blue', 'theme-purple', 'theme-green', 'theme-orange', 'theme-pink'];
     return cardThemes[Math.floor(Math.random() * cardThemes.length)];
+}
+
+// Example usage for testing
+function testAdaptiveCard() {
+    const cardData = {
+        title: 'Booking Information',
+        subtitle: 'Please provide your booking details',
+        fields: [
+            {
+                type: 'text',
+                label: 'Full Name',
+                placeholder: 'Enter your name',
+                required: true
+            },
+            {
+                type: 'email',
+                label: 'Email Address',
+                placeholder: 'your@email.com',
+                required: true
+            },
+            {
+                type: 'select',
+                label: 'Room Type',
+                options: [
+                    { value: 'standard', label: 'Standard Room' },
+                    { value: 'deluxe', label: 'Deluxe Room' },
+                    { value: 'suite', label: 'Suite' }
+                ]
+            },
+            {
+                type: 'checkbox',
+                label: 'Additional Services',
+                options: [
+                    { value: 'breakfast', label: 'Breakfast' },
+                    { value: 'parking', label: 'Parking' },
+                    { value: 'wifi', label: 'WiFi' }
+                ]
+            }
+        ],
+        actions: [
+            {
+                label: 'Submit',
+                type: 'primary',
+                onClick: () => console.log('Submit clicked')
+            },
+            {
+                label: 'Cancel',
+                type: 'secondary',
+                onClick: () => console.log('Cancel clicked')
+            }
+        ]
+    };
+
+    appendBotMessage('Please fill out the booking form:', { card: cardData });
 }
